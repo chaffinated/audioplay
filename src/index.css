@@ -1,0 +1,78 @@
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+.waveform {
+	
+}
+
+.waveform--placeholder {
+	stroke: #0F6661;
+}
+
+.waveform--bar {
+	transform: scaleY(0.0001);
+	transform-origin: 50% 50%;
+	transition: transform 420ms ease-in-out;
+	stroke: #0F6661;
+	mix-blend-mode: hard-light;
+}
+
+.waveform--bar.ready {
+	transform: scaleY(1);
+}
+
+.waveform--playhead {
+	stroke: #111;
+	mix-blend-mode: multiply;
+	transform-origin: 50% 50%;
+}
+
+.waveform--cursor {
+	stroke: #FFF;
+	mix-blend-mode: overlay;
+	transform: scaleY(0.0001);
+	transform-origin: 50% 50%;
+	transition: transform 160ms ease-in-out;
+}
+
+.waveform--cursor.ready {
+	transform: scaleY(1);
+}
+
+.visualizer--bar {
+	transform-origin: 50% 50%;
+	transform: scaleY(1);
+	stroke: #928EF9;
+}
+
+.controls {
+	position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 20;
+}
+
+.controls--play {
+	width: 100px;
+  height: 100px;
+}
+
+.controls--play path {
+	transition: fill 80ms linear;
+}
+
+.controls--play path:hover {
+  fill: #A5B3B2;
+}
