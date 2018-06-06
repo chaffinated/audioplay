@@ -11,10 +11,6 @@ const Viz = Waveform.extend`
 `
 
 export default class Visualizer extends Component {
-  constructor (props) {
-    super(props)
-  }
-
   static propTypes = {
     waveform: PropTypes.arrayOf(Number).isRequired,
     fft: PropTypes.instanceOf(Float32Array).isRequired,
