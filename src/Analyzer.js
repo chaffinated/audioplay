@@ -21,7 +21,7 @@ export default class Analyzer extends Component {
 	  visualizer: PropTypes.func.isRequired,
 	  playing: PropTypes.bool.isRequired,
 	  ended: PropTypes.bool.isRequired,
-	  progress: PropTypes.number.isRequired,
+	  // progress: PropTypes.number.isRequired,
 	  waveform: PropTypes.arrayOf(PropTypes.number).isRequired,
 	  audioContext: PropTypes.instanceOf(AudioContext),
 	  audio: PropTypes.instanceOf(Audio)
@@ -48,12 +48,11 @@ export default class Analyzer extends Component {
 	}
 
 	render () {
-	  const {bins, progress, waveform} = this.props
+	  const {bins, waveform} = this.props
 	  const {timeDomain, fft} = this.state
 	  return <this.props.visualizer
 	    bins={bins}
 	    waveform={waveform}
-	    progress={progress}
 	    timeDomain={timeDomain}
 	    fft={fft}
   	/>

@@ -13,8 +13,8 @@ const Viz = Waveform.extend`
 export default class Visualizer extends Component {
   static propTypes = {
     waveform: PropTypes.arrayOf(Number).isRequired,
-    fft: PropTypes.instanceOf(Float32Array).isRequired,
-    progress: PropTypes.number.isRequired
+    fft: PropTypes.instanceOf(Float32Array).isRequired
+    // progress: PropTypes.number.isRequired
   }
 
   draw = () => {
@@ -42,7 +42,7 @@ export default class Visualizer extends Component {
   }
 
   render () {
-    const {waveform, progress, fft} = this.props
+    const {waveform, fft} = this.props
     if (waveform == null || fft == null) return null
 
     return (

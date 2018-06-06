@@ -112,11 +112,12 @@ class AudioPlay extends Component {
     const {bins} = this.props
     const p = e / (1000 * this.duration)
     const f = Math.round(bins * p)
-    this.setState({playingProgress: p})
+    this.playingProgress = p
   }
 
   draw = () => {
-
+    if (this.state.playingProgress === this.playingProgress) return
+    this.setState({playingProgress: this.playingProgress})
   }
 
   calculateWaveform = (buffer) => {
@@ -182,7 +183,6 @@ class AudioPlay extends Component {
               audioContext={audioContext}
               source={source}
               visualizer={visualizer}
-              progress={playingProgress}
               playing={playing}
               ended={ended}
               waveform={bars}
