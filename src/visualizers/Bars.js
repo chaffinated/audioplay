@@ -1,34 +1,50 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-// import styled from 'styled-components'
+import styled from 'styled-components'
 import range from 'lodash/range'
 import { float32Array } from '../PropTypes'
-import { Waveform } from '../styled'
+import { calculateRMSWaveform } from '../utils'
 
-const Viz = Waveform.extend`
+const Viz = styled.canvas`
+  position: absolute;
+  width: 800px;
+  height: 600px;
   z-index: 10;
   mix-blend-mode: multiply;
 `
 
 export default class Visualizer extends Component {
+  constructor (props) {
+    super(props)
+    this.waveform = []
+  }
+
   static propTypes = {
-    waveform: PropTypes.arrayOf(Number).isRequired,
-    fft: PropTypes.instanceOf(Float32Array).isRequired
+    fft: PropTypes.instanceOf(Float32Array).isRequired,
+    bins: PropTypes.number.isRequired,
+    buffer: PropTypes.instanceOf(AudioBuffer).isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired
     // progress: PropTypes.number.isRequired
+  }
+
+  componentDidMount () {
+    const {bins, buffer} = this.props
+    this.waveform = calculateRMSWaveform(buffer, bins)
   }
 
   draw = () => {
     if (this.canvas == null) return
-    const {waveform, fft} = this.props
-    const barHeightScalar = 1000
-    const barWidth = 10
-    const vCenter = 500
+    const {waveform} = this
+    const {fft, width, height, bins} = this.props
+    const barHeightScalar = height
+    const barWidth = width / bins
+    const vCenter = height / 2
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.width)
-    // this.ctx.fillStyle = 'blue'
     let barY, barHeight, intensity
 
-    for (let i = 0; i < waveform.length; i++) {
+    for (let i = 0; i < fft.length; i++) {
       intensity = (fft[i] + 280) / 280
       this.ctx.fillStyle = `rgb(${Math.floor(intensity * 255)}, ${Math.floor(intensity * 180)}, ${Math.floor(1 / intensity * 128)})`
       barHeight = waveform[i] * intensity * barHeightScalar * 2
@@ -42,7 +58,8 @@ export default class Visualizer extends Component {
   }
 
   render () {
-    const {waveform, fft} = this.props
+    const {waveform} = this
+    const {fft, bins, height, width} = this.props
     if (waveform == null || fft == null) return null
 
     return (
@@ -52,8 +69,8 @@ export default class Visualizer extends Component {
           this.canvas = el
           this.ctx = el && el.getContext('2d')
         }}
-        width={waveform.length * 10}
-        height={1000}
+        width={width}
+        height={height}
       />
     )
   }

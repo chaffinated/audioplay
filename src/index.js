@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import { render } from 'react-dom'
 import styled from 'styled-components'
 import AudioPlay from './AudioPlay'
-// import src from './audio/loop.wav'
-import src from './audio/lavender.mp3'
-import Bars from './visualizers/Bars'
-import Circles from './visualizers/Circles'
+import src from './audio/lavender.mp3' // change this to the path of your audio file
 
 const Wrap = styled.div`
   display: flex;
@@ -19,7 +16,7 @@ class App extends Component {
   render () {
     return (
       <Wrap>
-        <AudioPlay src={src} visualizer={Bars} />
+        <AudioPlay src={src} />
       </Wrap>
     )
   }
