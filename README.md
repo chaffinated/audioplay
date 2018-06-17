@@ -8,7 +8,7 @@ To try this component out, clone this repo, then
 yarn install
 ```
 
-You must bring your own audio file (for copyright reasons). Simply add an audio file in `src/audio`, then import it in `src/index.js`. Finally, run
+You must bring your own audio file (for copyright reasons). Simply add an audio file in `testapp/audio`, then import it in `testapp/index.js`. Finally, run
 
 ```bash
 yarn start

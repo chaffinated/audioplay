@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "export NODE_ENV=test && babel-tape-runner src/__tests__/index.js | tap-spec",
-    "start": "parcel ./src/index.html",
-    "parcel": "parcel ./src/index.html"
+    "start": "parcel ./testapp/index.html"
   },
   "keywords": [
     "react",
