@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import range from 'lodash/range'
-import { float32Array } from '../PropTypes'
-import { calculateRMSWaveform } from '../utils'
+import { calculateRMSWaveform, powerOf2 } from '../utils'
 
 const Viz = styled.canvas`
   position: absolute;

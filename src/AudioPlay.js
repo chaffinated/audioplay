@@ -6,8 +6,7 @@ import Analyzer from './Analyzer'
 import { Bars as Waveform } from './waveforms'
 import { Bars as Visualizer } from './visualizers'
 import { Play } from './icons'
-import Ticker from './Ticker'
-import { powerOf2 } from './PropTypes'
+import { powerOf2, Ticker } from './utils'
 
 const Screen = styled.div`
   position: relative;

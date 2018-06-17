@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { powerOf2 } from './PropTypes'
-import Ticker from './Ticker'
+import { powerOf2, Ticker } from './utils'
 
 const AudioContext = window.AudioContext || window.webkitAudioContext
 
