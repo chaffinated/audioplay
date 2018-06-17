@@ -1,3 +1,2 @@
-import Play from './play'
 
-export { Play }
+export { default as Play } from './play'

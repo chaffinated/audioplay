@@ -16,51 +16,51 @@ export default class Analyzer extends Component {
     }
   }
 
-	static propTypes = {
-	  bins: powerOf2.isRequired,
-	  width: PropTypes.number.isRequired,
-	  height: PropTypes.number.isRequired,
-	  buffer: PropTypes.instanceOf(AudioBuffer).isRequired,
-	  visualizer: PropTypes.func.isRequired,
-	  playing: PropTypes.bool.isRequired,
-	  ended: PropTypes.bool.isRequired,
-	  // progress: PropTypes.number.isRequired,
-	  audioContext: PropTypes.instanceOf(AudioContext),
-	  audio: PropTypes.instanceOf(Audio)
-	}
+  static propTypes = {
+    bins: powerOf2.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    buffer: PropTypes.instanceOf(AudioBuffer).isRequired,
+    visualizer: PropTypes.func.isRequired,
+    playing: PropTypes.bool.isRequired,
+    ended: PropTypes.bool.isRequired,
+    // progress: PropTypes.number.isRequired,
+    audioContext: PropTypes.instanceOf(AudioContext),
+    audio: PropTypes.instanceOf(Audio)
+  }
 
-	componentDidMount () {
-	  const {audioContext, source, bins} = this.props
-	  this.analyzer = audioContext.createAnalyser()
-	  this.analyzer.fftSize = bins * 2
-	  source.connect(this.analyzer)
-	  Ticker.push(this, false)
-	}
+  componentDidMount () {
+    const {audioContext, source, bins} = this.props
+    this.analyzer = audioContext.createAnalyser()
+    this.analyzer.fftSize = bins * 2
+    source.connect(this.analyzer)
+    Ticker.push(this, false)
+  }
 
-	update (t) {
-	  const {playing, ended} = this.props
-	  if (!playing || ended) return
-	  const {fft} = this.state
-	  this.analyzer.getFloatFrequencyData(fft)
-	}
+  update (t) {
+    const {playing, ended} = this.props
+    if (!playing || ended) return
+    const {fft} = this.state
+    this.analyzer.getFloatFrequencyData(fft)
+  }
 
-	draw (t) {
-	  // NOTE: This isn't exactly intuitive, but we must
-	  // trigger an update...
-	  const {fft} = this.state
-	  this.setState({fft})
-	}
+  draw (t) {
+    // NOTE: This isn't exactly intuitive, but we must
+    // trigger an update...
+    const {fft} = this.state
+    this.setState({fft})
+  }
 
-	render () {
-	  const {bins, buffer, height, width} = this.props
-	  const {timeDomain, fft} = this.state
-	  return <this.props.visualizer
-	    bins={bins}
-	    buffer={buffer}
-	    height={height}
-	    width={width}
-	    timeDomain={timeDomain}
-	    fft={fft}
-  	/>
-	}
+  render () {
+    const {bins, buffer, height, width} = this.props
+    const {timeDomain, fft} = this.state
+    return <this.props.visualizer
+      bins={bins}
+      buffer={buffer}
+      height={height}
+      width={width}
+      timeDomain={timeDomain}
+      fft={fft}
+    />
+  }
 }

@@ -4,30 +4,30 @@ import styled from 'styled-components'
 import { calculateRMSWaveform } from './utils'
 
 const SVG = styled.svg`
-	position: absolute;
+  position: absolute;
   width: 800px;
   height: 600px;
 `
 
 export default class Waveform extends Component {
-	static propTypes = {
-	  buffer: PropTypes.instanceOf(AudioBuffer).isRequired,
-	  bins: PropTypes.number.isRequired,
-	  width: PropTypes.number.isRequired,
-	  height: PropTypes.number.isRequired
-	}
+  static propTypes = {
+    buffer: PropTypes.instanceOf(AudioBuffer).isRequired,
+    bins: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired
+  }
 
-	state = {
-	  bars: []
-	}
+  state = {
+    bars: []
+  }
 
-	componentDidMount () {
-	  this.renderWaveform()
-	}
+  componentDidMount () {
+    this.renderWaveform()
+  }
 
   renderWaveform = () => {
     const {bins, buffer, height, width} = this.props
-  	const frames = calculateRMSWaveform(buffer, bins)
+    const frames = calculateRMSWaveform(buffer, bins)
     const barHeightScalar = height
     const barWidth = width / bins
     const vCenter = height / 2
@@ -61,18 +61,18 @@ export default class Waveform extends Component {
   //   }
 
   render () {
-  	const {width, height} = this.props
-  	const {bars} = this.state
+    const {width, height} = this.props
+    const {bars} = this.state
 
-  	return (
+    return (
       <SVG
-      onMouseMove={this.handleMouseMove}
-      onMouseOver={this.handleMouseOver}
-      onMouseOut={this.handleMouseOut}
-      width={width}
-      height={height}>
-      {bars.map(({x, y, width, height}, i) => <rect key={i} x={x} y={y} width={width} height={height} />)}
-    </SVG>
-  	)
+        onMouseMove={this.handleMouseMove}
+        onMouseOver={this.handleMouseOver}
+        onMouseOut={this.handleMouseOut}
+        width={width}
+        height={height}>
+        {bars.map(({x, y, width, height}, i) => <rect key={i} x={x} y={y} width={width} height={height} />)}
+      </SVG>
+    )
   }
 }
