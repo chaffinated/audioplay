@@ -11,6 +11,7 @@ const Viz = styled.canvas`
   height: 600px;
   z-index: 10;
   mix-blend-mode: multiply;
+  pointer-events: none;
 `
 
 export default class Visualizer extends Component {

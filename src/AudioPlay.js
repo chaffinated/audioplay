@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import range from 'lodash/range'
-import Waveform from './Waveform'
 import Analyzer from './Analyzer'
-import Bars from './visualizers/Bars'
+import { Bars as Waveform } from './waveforms'
+import { Bars as Visualizer } from './visualizers'
 import { Play } from './icons'
 import Ticker from './Ticker'
 import { powerOf2 } from './PropTypes'
@@ -28,8 +28,6 @@ class AudioPlay extends Component {
     this.state = {
       bars: range(0, bins).map(b => 0),
       ready: false,
-      cursor: 0,
-      shouldShowCursor: false,
       playing: false,
       ended: false,
       playingProgress: 0,
@@ -48,7 +46,7 @@ class AudioPlay extends Component {
 
   static defaultProps = {
     bins: 256,
-    visualizer: Bars,
+    visualizer: Visualizer,
     height: 600,
     width: 800,
     waveform: Waveform
@@ -129,8 +127,7 @@ class AudioPlay extends Component {
   render () {
     const {audio, audioContext, source} = this
     const {bins, visualizer, height, width} = this.props
-    const {bars, ready, cursor, shouldShowCursor, playingProgress, playing, ended, buffer} = this.state
-    const className = ready ? 'waveform--bar ready' : 'waveform--bar'
+    const {bars, ready, playingProgress, playing, ended, buffer} = this.state
     const playheadX = Math.round(bins * playingProgress)
 
     return (
