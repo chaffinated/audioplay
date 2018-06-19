@@ -39,15 +39,16 @@ export default class Analyzer extends Component {
   update (t) {
     const {playing, ended} = this.props
     if (!playing || ended) return
-    const {fft} = this.state
+    const {fft, timeDomain} = this.state
     this.analyzer.getFloatFrequencyData(fft)
+    // this.analyzer.getFloatTimeDomainData(timeDomain)
   }
 
   draw (t) {
     // NOTE: This isn't exactly intuitive, but we must
     // trigger an update...
-    const {fft} = this.state
-    this.setState({fft})
+    const {fft, timeDomain} = this.state
+    this.setState({fft, timeDomain})
   }
 
   render () {
