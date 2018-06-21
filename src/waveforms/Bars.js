@@ -5,8 +5,11 @@ import { calculateRMSWaveform } from '../utils'
 
 const SVG = styled.svg`
   position: absolute;
-  width: 800px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
+  max-width: 800px;
+  max-height: 600px;
+  min-height: 400px;
 `
 
 const Cursor = styled.rect`
@@ -75,11 +78,11 @@ export default class Waveform extends Component {
       return (
         <SVG
           innerRef={el => { this.svg = el }}
+          viewBox={`0 0 ${width} ${height}`}
+          preserveAspectRatio='none'
           onMouseMove={this.handleMouseMove}
           onMouseOver={this.handleMouseOver}
-          onMouseOut={this.handleMouseOut}
-          width={width}
-          height={height}>
+          onMouseOut={this.handleMouseOut}>
           {bars.map(({x, y, width, height}, i) => <rect key={i} x={x} y={y} width={width} height={height} />)}
           {shouldShowCursor ? <Cursor x={cursor} y={0} width={width / bins} height={height} /> : null}
         </SVG>

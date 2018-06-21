@@ -10,8 +10,11 @@ import { powerOf2, Ticker } from './utils'
 
 const Screen = styled.div`
   position: relative;
-  width: 800px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  max-width: 800px;
+  max-height: 600px;
   background-color: #D3E3E0;
 `
 

@@ -6,8 +6,11 @@ import { calculateRMSWaveform, powerOf2 } from '../utils'
 
 const Viz = styled.canvas`
   position: absolute;
-  width: 800px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
+  max-width: 800px;
+  max-height: 600px;
+  min-height: 400px;
   z-index: 10;
   mix-blend-mode: multiply;
   pointer-events: none;
@@ -21,6 +24,7 @@ export default class Visualizer extends Component {
 
   static propTypes = {
     fft: PropTypes.instanceOf(Float32Array).isRequired,
+    timeDomain: PropTypes.instanceOf(Float32Array).isRequired,
     bins: PropTypes.number.isRequired,
     buffer: PropTypes.instanceOf(AudioBuffer).isRequired,
     width: PropTypes.number.isRequired,
@@ -36,7 +40,7 @@ export default class Visualizer extends Component {
   draw = () => {
     if (this.canvas == null) return
     const {waveform} = this
-    const {fft, width, height, bins} = this.props
+    const {fft, timeDomain, width, height, bins} = this.props
     const barHeightScalar = height
     const barWidth = width / bins
     const vCenter = height / 2
