@@ -35,6 +35,7 @@ class AudioPlay extends Component {
       playingProgress: 0,
       buffer: null
     }
+    this._audioContextSuspended = true;
   }
 
   static propTypes = {
@@ -86,6 +87,15 @@ class AudioPlay extends Component {
   }
 
   handlePressPlay = (e) => {
+    if (this._audioContextSuspended) {
+      this._audioContextSuspended = false;
+      this.audioContext.resume().then(this.togglePlay);
+    } else {
+      this.togglePlay();
+    }
+  }
+
+  togglePlay = () => {
     const {playing} = this.state
     if (playing) {
       console.log('pausing')
@@ -94,22 +104,24 @@ class AudioPlay extends Component {
         this.audio.pause()
       })
     }
-    return this.setState({playing: true}, () => {
-      if (this.state.ended) {
-        console.log('restarting')
-        this.setState({playingProgress: 0, ended: false})
-        Ticker.push(this)
-      } else {
-        console.log('playing')
-      }
-      Ticker.start()
-      this.audio.play()
-    })
+    return this.setState({playing: true}, this.updatePlayState);
   }
 
   handleEnded = (e) => {
     Ticker.clear(this)
     this.setState({playing: false, ended: true, playingProgress: 0})
+  }
+
+  updatePlayState = () => {
+    if (this.state.ended) {
+      console.log('restarting')
+      this.setState({playingProgress: 0, ended: false})
+      Ticker.push(this)
+    } else {
+      console.log('playing')
+    }
+    Ticker.start()
+    this.audio.play()
   }
 
   update = (e) => {
@@ -137,17 +149,17 @@ class AudioPlay extends Component {
         {
           ready && source && buffer
             ? <Analyzer
-              bins={bins}
-              width={width}
-              height={height}
-              buffer={buffer}
-              audio={audio}
-              audioContext={audioContext}
-              source={source}
-              visualizer={visualizer}
-              playing={playing}
-              ended={ended}
-            />
+                bins={bins}
+                width={width}
+                height={height}
+                buffer={buffer}
+                audio={audio}
+                audioContext={audioContext}
+                source={source}
+                visualizer={visualizer}
+                playing={playing}
+                ended={ended}
+              />
             : null
         }
         {
