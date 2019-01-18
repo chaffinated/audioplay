@@ -49,7 +49,7 @@ export default class Visualizer extends Component {
     let barY, barHeight, intensity
 
     for (let i = 0; i < fft.length; i++) {
-      intensity = (fft[i] + 280) / 280
+      intensity = (fft[i] + vCenter) / vCenter
       this.ctx.fillStyle = `rgb(${Math.floor(intensity * 255)}, ${Math.floor(intensity * 180)}, ${Math.floor(1 / intensity * 128)})`
       barHeight = waveform[i] * intensity * barHeightScalar * 2
       barY = vCenter - (barHeight / 2)
