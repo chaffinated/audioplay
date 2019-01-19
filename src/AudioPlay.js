@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import range from 'lodash/range'
 import Analyzer from './Analyzer'
 import { Bars as Waveform } from './waveforms'
 import { Bars as Visualizer } from './visualizers'
@@ -28,7 +27,6 @@ class AudioPlay extends Component {
     super(props)
     const {bins} = props
     this.state = {
-      bars: range(0, bins).map(b => 0),
       ready: false,
       playing: false,
       ended: false,
@@ -141,7 +139,7 @@ class AudioPlay extends Component {
   render () {
     const {audio, audioContext, source} = this
     const {bins, visualizer, height, width} = this.props
-    const {bars, ready, playingProgress, playing, ended, buffer} = this.state
+    const {ready, playingProgress, playing, ended, buffer} = this.state
     const playheadX = Math.round(bins * playingProgress)
 
     return (

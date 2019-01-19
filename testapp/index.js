@@ -4,7 +4,8 @@ import styled from 'styled-components'
 import AudioPlay from '../src/AudioPlay'
 // import src from './audio/beast.mp3' // change this to the path of your audio file
 // import src from './audio/shed.mp3'
-import src from './audio/blurred-bonobo-remix.mp3'
+// import src from './audio/blurred-bonobo-remix.mp3'
+import src from './audio/2019.01.13.1351.mp3'
 
 const Wrap = styled.div`
   display: flex;
