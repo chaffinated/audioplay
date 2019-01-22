@@ -12,11 +12,6 @@ const SVG = styled.svg`
   min-height: 400px;
 `;
 
-const Cursor = styled.rect`
-  pointer-events: none;
-  fill: white;
-`;
-
 export default class Waveform extends Component {
   static propTypes = {
     buffer: PropTypes.instanceOf(AudioBuffer).isRequired,
@@ -58,26 +53,9 @@ export default class Waveform extends Component {
     this.setState({ bars });
   };
 
-  handleMouseMove = e => {
-    if (this.svg == null) return;
-    const { bins, width } = this.props;
-    const elWidth = this.svg.getBoundingClientRect().width;
-    const pos =
-      (Math.floor((e.nativeEvent.offsetX / elWidth) * bins) * width) / bins;
-    this.setState({ cursor: pos });
-  };
-
-  handleMouseOver = e => {
-    this.setState({ shouldShowCursor: true });
-  };
-
-  handleMouseOut = e => {
-    this.setState({ shouldShowCursor: false });
-  };
-
   render() {
-    const { width, height, bins } = this.props;
-    const { bars, shouldShowCursor, cursor } = this.state;
+    const { width, height } = this.props;
+    const { bars } = this.state;
 
     return (
       <SVG
@@ -88,17 +66,10 @@ export default class Waveform extends Component {
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.handleMouseOut}
       >
-
         {
           bars.map(({ x, y, width, height }, i) => (
             <rect key={i} x={x} y={y} width={width} height={height} />
           ))
-        }
-
-        {
-          shouldShowCursor
-            ? <Cursor x={cursor} y={0} width={width / bins} height={height} />
-            : null
         }
       </SVG>
     );

@@ -75,36 +75,85 @@ body {
 }
 
 
-.controls {
-	position: absolute;
-  bottom: 24px;
-  left: 24px;
-	z-index: 20;
-	
-	&__play {
-		width: 100px;
-		height: 100px;
-
-		path {
-			transition: fill 80ms linear;
-
-			&:hover {
-				fill: #A5B3B2;
-			}
-		}
+@keyframes pause-to-play {
+	0% {
+		clip-path: polygon(25% 20%, 71% 50%, 71% 50%, 25% 80%);
+	}
+	20% {
+		clip-path: polygon(25% 49%, 75% 49%, 75% 51%, 25% 51%);
+	}
+	80% {
+		clip-path: polygon(25% 49%, 75% 49%, 75% 51%, 25% 51%);
+	}
+	100% {
+		clip-path: polygon(25% 25%, 75% 25%, 75% 75%, 25% 75%);
 	}
 }
 
+@keyframes play-to-pause {
+	100% {
+		clip-path: polygon(25% 20%, 71% 50%, 71% 50%, 25% 80%);
+	}
+	80% {
+		clip-path: polygon(25% 49%, 75% 49%, 75% 51%, 25% 51%);
+	}
+	20% {
+		clip-path: polygon(25% 49%, 75% 49%, 75% 51%, 25% 51%);
+	}
+	0% {
+		clip-path: polygon(25% 25%, 75% 25%, 75% 75%, 25% 75%);
+	}
+}
 
-.playhead {
+.controls {
 	position: absolute;
 	top: 0;
+	bottom: 0;
 	left: 0;
-	height: 100%;
 	width: 100%;
-	border-style: solid;
-	border-color: black;
-	border-width: 0;
-	border-left-width: 2px;
-	pointer-events: none;
+	z-index: 20;
+	cursor: none;
+	
+	&__play {
+		position: relative;
+		cursor: pointer;
+		width: 100px;
+		height: 100px;
+		z-index: 30;
+		background: black url('./images/play-button.png') no-repeat center/cover;
+		clip-path: polygon(33% 25%, 70% 50%, 33% 75%);
+		
+		&--paused {
+			animation: play-to-pause 300ms ease-out forwards;
+		}
+		
+		&--playing {
+			animation: pause-to-play 300ms ease-out forwards;
+		}
+	}
+	
+	&__playhead {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		border-style: solid;
+		border-color: black;
+		border-width: 0;
+		border-left-width: 2px;
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	&__cursor {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 2px;
+		background-color: white;
+		opacity: 0.6;
+		z-index: 10;
+	}
 }

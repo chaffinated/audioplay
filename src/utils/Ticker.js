@@ -1,87 +1,93 @@
-const MS = 16
+const MS = 1000 / 60;
 
 class Ticker {
-  constructor ({pauseInBackground = true, autostart = true} = {}) {
-    this.ticking = false
-    this.paused = false
-    this.queue = []
-    this.startTimes = []
-    this.times = []
-    this.mutateTasks = []
-    this.measureTasks = []
-    this.autostart = autostart
-    this.lastTime = null
+  constructor({ pauseInBackground = true, autostart = true } = {}) {
+    this.ticking = false;
+    this.paused = false;
+    this.queue = [];
+    this.startTimes = [];
+    this.times = [];
+    this.mutateTasks = [];
+    this.measureTasks = [];
+    this.autostart = autostart;
+    this.lastTime = null;
     if (!pauseInBackground) {
       window.document.addEventListener('visibilitychange', () => {
-        this.pause(window.document.hidden)
-      })
+        this.pause(window.document.hidden);
+      });
     }
   }
 
   pause = () => {
-    this.paused = true
-  }
+    this.paused = true;
+  };
 
   start = () => {
-    this.paused = false
-    this.tick(window.performance.now())
-  }
+    this.paused = false;
+    this.tick(window.performance.now());
+  };
 
-  tick = (t) => {
-    const {tick, startTimes, times, queue, paused, measureTasks, mutateTasks} = this
-    this.lastTime = this.lastTime || t
-    const delta = t - this.lastTime
+  tick = t => {
+    const {
+      tick,
+      startTimes,
+      times,
+      queue,
+      paused,
+    } = this;
+    this.lastTime = this.lastTime || t;
+    const delta = t - this.lastTime;
     if (queue.length === 0) {
-      this.ticking = false
-      return
+      this.ticking = false;
+      return;
     }
     if (delta < MS) {
-      window.requestAnimationFrame(tick)
-      return
+      window.requestAnimationFrame(tick);
+      return;
     }
 
-    this.lastTime = t
+    this.lastTime = t;
 
-    var i = queue.length - 1
+    var i = queue.length - 1;
     while (i >= 0) {
-      const component = queue[i]
-      if (startTimes[i] == null) startTimes[i] = t
-      times[i] = t - startTimes[i]
+      const component = queue[i];
+      if (startTimes[i] == null) startTimes[i] = t;
+      times[i] = t - startTimes[i];
       if (component.animationPaused || paused) {
-        startTimes[i] += delta
+        startTimes[i] += delta;
       } else {
-        component.update(times[i])
-        component.draw(times[i])
+        component.update(times[i]);
+        component.draw(times[i]);
       }
-      i--
+      i--;
     }
 
-    window.requestAnimationFrame(tick)
-  }
+    window.requestAnimationFrame(tick);
+  };
 
-  push = (component) => {
-    const {queue, tick} = this
-    queue.push(component)
+  push = component => {
+    const { queue, tick } = this;
+    queue.push(component);
     if (this.ticking || !this.autostart) {
-      return
+      return;
     }
-    tick(window.performance.now())
-    this.ticking = true
-  }
+    tick(window.performance.now());
+    this.ticking = true;
+  };
 
-  clear = (component) => {
-    const {queue, times, startTimes, measureTasks, mutateTasks} = this
-    const idx = queue.indexOf(component)
-    queue.splice(idx, 1)
-    times.splice(idx, 1)
-    startTimes.splice(idx, 1)
-  }
+  clear = component => {
+    const { queue, times, startTimes, measureTasks, mutateTasks } = this;
+    const idx = queue.indexOf(component);
+    queue.splice(idx, 1);
+    times.splice(idx, 1);
+    startTimes.splice(idx, 1);
+  };
 }
 
-const T = new Ticker()
+const T = new Ticker();
 
 // The default export should be a singleton to prevent careless
 // instantiations causing multiple rAF loops (which is bad for performance)
-export default T
+export default T;
 
-export { Ticker }
+export { Ticker };

@@ -6,6 +6,7 @@ import AudioPlay from '../src/AudioPlay'
 // import src from './audio/shed.mp3'
 // import src from './audio/blurred-bonobo-remix.mp3'
 import src from './audio/2019.01.13.1351.mp3'
+import './index.scss';
 
 const Wrap = styled.div`
   display: flex;

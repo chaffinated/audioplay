@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Analyzer from './Analyzer';
+import PlayStatus from './constants/PlayStatus';
 import { Bars as Waveform } from './waveforms';
 import { Bars as Visualizer } from './visualizers';
 import { Controls } from './controls';
@@ -16,8 +17,7 @@ class AudioPlay extends Component {
     super(props);
     this.state = {
       ready: false,
-      playing: false,
-      ended: false,
+      status: PlayStatus.UNSTARTED,
       playingProgress: 0,
       buffer: null
     };
@@ -54,14 +54,13 @@ class AudioPlay extends Component {
     this.audioContext = new AudioContext();
     this.source = this.audioContext.createMediaElementSource(this.audio);
     this.source.connect(this.audioContext.destination);
-
     this.audio.addEventListener('loadedmetadata', this.handleMetaData);
     this.audio.addEventListener('ended', this.handleEnded);
     Ticker.push(this, false);
   }
 
   handleMetaData = () => {
-    this.duration = this.audio.duration;
+    // get track meta data and do something here maybe
   };
 
   decodeAudio = blob => {
@@ -84,38 +83,43 @@ class AudioPlay extends Component {
   };
 
   togglePlay = () => {
-    const { playing } = this.state;
-    if (playing) {
-      console.log('pausing');
-      return this.setState({ playing: false }, () => {
-        Ticker.pause();
+    const { status } = this.state;
+    if (status === PlayStatus.PLAYING) {
+      return this.setState({ status: PlayStatus.PAUSED }, () => {
         this.audio.pause();
       });
+    } else if (status === PlayStatus.ENDED) {
+      return this.setState({ status: PlayStatus.ENDED }, this.updatePlayState);
     }
-    return this.setState({ playing: true }, this.updatePlayState);
+    return this.setState({ status: PlayStatus.PLAYING }, this.updatePlayState);
   };
 
   handleEnded = e => {
     Ticker.clear(this);
-    this.setState({ playing: false, ended: true, playingProgress: 0 });
+    this.setState({ status: PlayStatus.ENDED, playingProgress: 0 });
   };
 
   updatePlayState = () => {
-    if (this.state.ended) {
-      console.log('restarting');
-      this.setState({ playingProgress: 0, ended: false });
+    const { status } = this.state;
+    if (status === PlayStatus.ENDED) {
+      this.setState({ playingProgress: 0, status: PlayStatus.PLAYING });
       Ticker.push(this);
-    } else {
-      console.log('playing');
     }
     Ticker.start();
     this.audio.play();
   };
 
-  update = e => {
-    if (!this.state.playing) return;
-    if (e / 1000 > this.duration) this.handleEnded();
-    const p = e / (1000 * this.duration);
+  setCurrentTime = (p) => {
+    this.audio.currentTime = p * this.audio.duration;
+    this.setState({ playingProgress: p });
+  }
+
+  update = () => {
+    const { audio } = this;
+    const { status } = this.state;
+    if (status !== PlayStatus.PLAYING || audio == null) return;
+    const p = audio.currentTime / audio.duration;
+    if (p > 1) this.handleEnded();
     this.playingProgress = p;
   };
 
@@ -124,10 +128,14 @@ class AudioPlay extends Component {
     this.setState({ playingProgress: this.playingProgress });
   };
 
+  get animationPaused() {
+    return this.state.status === PlayStatus.PAUSED;
+  }
+
   render() {
     const { audio, audioContext, source } = this;
     const { bins, visualizer, height, width } = this.props;
-    const { ready, playingProgress, playing, ended, buffer } = this.state;
+    const { ready, playingProgress, buffer, status } = this.state;
 
     return (
       <div className="screen" ref={el => { this.screen = el; }}>
@@ -143,8 +151,7 @@ class AudioPlay extends Component {
               audioContext={audioContext}
               source={source}
               visualizer={visualizer}
-              playing={playing}
-              ended={ended}
+              status={status}
             />
           )
           : null
@@ -163,7 +170,12 @@ class AudioPlay extends Component {
             : null
         }
 
-        <this.props.controls togglePlay={this.handlePressPlay} completion={playingProgress} />
+        <this.props.controls
+          togglePlay={this.handlePressPlay}
+          setCurrentTime={this.setCurrentTime}
+          completion={playingProgress}
+          status={status}
+        />
       </div>
     );
   }
