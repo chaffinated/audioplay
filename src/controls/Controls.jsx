@@ -39,7 +39,7 @@ export default class Controls extends PureComponent {
     this.setState({ shouldShowCursor: false });
   }
 
-  handleClick = (e) => {
+  setTime = (e) => {
     const { shouldShowCursor, cursorPosition } = this.state;
     if (!shouldShowCursor || this.controlsEl.current == null) return;
     const { width } = this.controlsEl.current.getBoundingClientRect();
@@ -47,8 +47,13 @@ export default class Controls extends PureComponent {
     this.props.setCurrentTime(p);
   }
 
+  togglePlay = (e) => {
+    e.stopPropagation();
+    this.props.togglePlay();
+  }
+
   render() {
-    const { togglePlay, completion, status } = this.props;
+    const { completion, status } = this.props;
     const { cursorPosition, shouldShowCursor } = this.state;
     const playheadStyle = {
       transform: `translateX(${completion * 100}%)`
@@ -64,12 +69,12 @@ export default class Controls extends PureComponent {
         onMouseOver={this.handleMouseOver}
         onMouseLeave={this.handleMouseLeave}
         onMouseMove={this.handleMouseMove}
+        onClick={this.setTime}
         ref={this.controlsEl}
       >
         <div className='controls__playhead' style={playheadStyle} />
-        { shouldShowCursor && <div className='controls__cursor' style={cursorStyle} onClick={this.handleClick} /> }
-        {/* <Play className="controls__play" onClick={togglePlay} /> */}
-        <div className={playClass} onClick={togglePlay} />
+        { shouldShowCursor && <div className='controls__cursor' style={cursorStyle} onClick={this.setTime} /> }
+        <div className={playClass} onClick={this.togglePlay} />
       </div>
     );
   }

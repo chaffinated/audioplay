@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Analyzer from './Analyzer';
 import PlayStatus from './constants/PlayStatus';
-import { Bars as Waveform } from './waveforms';
-import { Bars as Visualizer } from './visualizers';
-import { Controls } from './controls';
+import { CircleBars as Waveform } from './waveforms';
+import { CircleBars as Visualizer } from './visualizers';
+import { CircleControls as Controls } from './controls';
 import { powerOf2, Ticker } from './utils';
 
 Ticker.autostart = false;
@@ -37,7 +37,7 @@ class AudioPlay extends Component {
   static defaultProps = {
     bins: 256,
     visualizer: Visualizer,
-    height: 600,
+    height: 800,
     width: 800,
     waveform: Waveform,
     controls: Controls,
@@ -139,7 +139,7 @@ class AudioPlay extends Component {
 
     return (
       <div className="screen" ref={el => { this.screen = el; }}>
-        {
+        {/* {
           ready && source && buffer
           ? (
             <Analyzer
@@ -155,7 +155,7 @@ class AudioPlay extends Component {
             />
           )
           : null
-        }
+        } */}
         
         {
           ready && buffer
