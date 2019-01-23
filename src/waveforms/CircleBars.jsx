@@ -1,17 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { calculateRMSWaveform } from '../utils';
 import { TWOPI } from '../constants/math';
-
-const SVG = styled.svg`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  max-width: 800px;
-  max-height: 800px;
-  min-height: 400px;
-`;
 
 export default class Waveform extends Component {
   static propTypes = {
@@ -26,6 +16,11 @@ export default class Waveform extends Component {
     shouldShowCursor: false,
     bars: []
   };
+
+  constructor(props) {
+    super(props);
+    this.svg = React.createRef();
+  }
 
   componentDidMount() {
     this.renderWaveform();
@@ -49,7 +44,7 @@ export default class Waveform extends Component {
       barHeight = frames[i] * barHeightScalar;
       r2 = r1 - barHeight;
       c = Math.cos(angle);
-      s = Math.sin(angle);
+      s = -Math.sin(angle);
       bars.push({
         x1: r1 * c + r1,
         y1: r1 * s + r1,
@@ -67,8 +62,9 @@ export default class Waveform extends Component {
     const barWidth = (TWOPI * r / bars.length) - 3;
 
     return (
-      <SVG
-        innerRef={el => { this.svg = el; }}
+      <svg
+        className='visualizer'
+        ref={this.svg}
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="none"
         onMouseMove={this.handleMouseMove}
@@ -80,7 +76,7 @@ export default class Waveform extends Component {
             <line className='waveform__bar' key={i} x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={barWidth} />
           ))
         }
-      </SVG>
+      </svg>
     );
   }
 }

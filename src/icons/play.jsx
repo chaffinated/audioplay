@@ -15,7 +15,7 @@ export default ({className = 'icon-play', status, ...props}) => {
         </mask>
         <mask id="playing">
           <rect x="0" y="0" width="100" height="100" fill="white" />
-          <polygon points="36 30, 70 30, 70 50, 36 70" fill="black" />
+          <polygon points="30 30, 70 30, 70 70, 30 70" fill="black" />
         </mask>
       </defs>
       <circle cx="50" cy="50" r="50" mask={`url(#${playMask})`} />

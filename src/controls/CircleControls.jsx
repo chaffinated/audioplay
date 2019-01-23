@@ -46,7 +46,7 @@ export default class Controls extends PureComponent {
     const cursorX = r * Math.cos(angle);
     const cursorY = -r * Math.sin(angle);
     this.setState({ cursorPosition: {
-      angle,
+      angle: angle < 0 ? angle + TWOPI : angle,
       x1: r,
       y1: r,
       x2: cursorX + r,
@@ -95,7 +95,7 @@ export default class Controls extends PureComponent {
           </mask>
           <mask id="playing">
             <rect x="0" y="0" width="100" height="100" fill="white" />
-            <polygon points="36 30, 70 30, 70 70, 36 70" fill="black" />
+            <polygon points="30 30, 70 30, 70 70, 30 70" fill="black" />
           </mask>
         </defs>
 
