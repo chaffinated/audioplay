@@ -16,94 +16,94 @@ body {
 .screen {
 	overflow: hidden;
 	position: relative;
-  width: 100%;
-  height: 100%;
+  // width: 100%;
+  // height: 100%;
+  width: 800px;
   height: 800px;
   max-width: 800px;
-  max-height: 800px;
-	background-color: #d3e3e0;
-	border-radius: 50%;
+	max-height: 800px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 
 .waveform {
+	position: relative;
+	z-index: 20;
 	pointer-events: none;
+	max-width: 100%;
+	max-height: 100%;
+	width: 100%;
+	height: 100%;
 
-	&__placeholder {
-		stroke: #0F6661;
+	&__bg {
+		&__stop1 {
+			// stop-color: #D9FAEF;
+			stop-color: rgba(250,249,255,1);
+		}
+		
+		&__stop2 {
+			// stop-color: #A79BC7;
+			stop-color: rgba(220,208,215,1);
+		}
 	}
 
 	&__bar {
-		stroke: #0F6661;
-		mix-blend-mode: hard-light;
-	}
-
-	&__playhead {
-		stroke: #111;
+		stroke: rgba(25,5,30, 0.4);
 		mix-blend-mode: multiply;
-		transform-origin: 50% 50%;
 	}
 }
 
 
 .visualizer {
 	position: absolute;
+	top: 0;
+	left: 0;
   width: 100%;
   height: 100%;
-  max-width: 800px;
-  max-height: 800px;
-  min-height: 800px;
+  // max-width: 100%;
+  // max-height: 100%;
+  min-width: 100%;
+  min-height: 100%;
   z-index: 10;
   mix-blend-mode: multiply;
 	pointer-events: none;
-}
-
-
-@keyframes pause-to-play {
-	0% {
-		clip-path: polygon(25% 20%, 71% 50%, 71% 50%, 25% 80%);
-	}
-	20% {
-		clip-path: polygon(25% 49%, 75% 49%, 75% 51%, 25% 51%);
-	}
-	80% {
-		clip-path: polygon(25% 49%, 75% 49%, 75% 51%, 25% 51%);
-	}
-	100% {
-		clip-path: polygon(25% 25%, 75% 25%, 75% 75%, 25% 75%);
-	}
-}
-
-@keyframes play-to-pause {
-	100% {
-		clip-path: polygon(25% 20%, 71% 50%, 71% 50%, 25% 80%);
-	}
-	80% {
-		clip-path: polygon(25% 49%, 75% 49%, 75% 51%, 25% 51%);
-	}
-	20% {
-		clip-path: polygon(25% 49%, 75% 49%, 75% 51%, 25% 51%);
-	}
-	0% {
-		clip-path: polygon(25% 25%, 75% 25%, 75% 75%, 25% 75%);
-	}
+	// opacity: 0.5;
 }
 
 .controls {
 	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
+	top: 50%;
+	left: 50%;
 	width: 100%;
-	z-index: 20;
-	// cursor: none;
+	height: 100%;
+	transform: translate(-50%, -50%);
+	z-index: 30;
 	
 	&__play {
 		cursor: pointer;
+
+		&__bg {
+			&__stop1 {
+				// stop-color: #D9FAEF;
+				stop-color: rgb(93, 91, 107);
+			}
+			
+			&__stop2 {
+				// stop-color: #A79BC7;
+				stop-color: rgb(192, 179, 162);
+			}
+		}
+
+		&__button-fill {
+			fill: white;
+		}
 	}
 	
 	&__playhead {
-		stroke: black;
+		stroke: rgba(25,5,30, 0.5);
+		mix-blend-mode: multiply;
 		pointer-events: none;
 	}
 

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { playStatus } from '../utils';
 import { TWOPI } from '../constants/math';
+import { INNER_TO_OUTER_RATIO } from '../constants/Circles';
 import { Play } from '../icons';
 
 export default class Controls extends PureComponent {
@@ -75,8 +76,8 @@ export default class Controls extends PureComponent {
     const { completion, status, width, height } = this.props;
     const { cursorPosition, shouldShowCursor } = this.state;
     const radius = Math.min(width, height) / 2;
-    const playheadX2 = Math.cos(completion * TWOPI) * radius + radius;
-    const playheadY2 = height / 2 - Math.sin(completion * TWOPI) * radius;
+    const playheadX2 = Math.cos(completion * TWOPI) * (radius * INNER_TO_OUTER_RATIO) + radius;
+    const playheadY2 = height / 2 - Math.sin(completion * TWOPI) * (radius * INNER_TO_OUTER_RATIO);
 
     return (
       <svg
@@ -88,18 +89,8 @@ export default class Controls extends PureComponent {
         onClick={this.setTime}
         ref={this.controlsEl}
       >
-        <defs>
-          <mask id="paused">
-            <rect x="0" y="0" width="100" height="100" fill="white" />
-            <polygon points="36 30, 70 50, 70 50, 36 70" fill="black" />
-          </mask>
-          <mask id="playing">
-            <rect x="0" y="0" width="100" height="100" fill="white" />
-            <polygon points="30 30, 70 30, 70 70, 30 70" fill="black" />
-          </mask>
-        </defs>
-
         <line className='controls__playhead' x1={radius} y1={radius} x2={playheadX2} y2={playheadY2} strokeWidth='2' />
+
         {
           shouldShowCursor &&
             <line

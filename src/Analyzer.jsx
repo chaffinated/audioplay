@@ -28,6 +28,10 @@ export default class Analyzer extends Component {
     audio: PropTypes.instanceOf(Audio)
   };
 
+  get animationPaused() {
+    return this.props.status !== PlayStatus.PLAYING;
+  }
+
   componentDidMount() {
     const { audioContext, source, bins } = this.props;
     this.analyzer = audioContext.createAnalyser();
@@ -53,7 +57,7 @@ export default class Analyzer extends Component {
   }
 
   render() {
-    const { bins, buffer, height, width } = this.props;
+    const { bins, buffer, height, width, status } = this.props;
     const { timeDomain, fft } = this.state;
     return (
       <this.props.visualizer
@@ -63,6 +67,7 @@ export default class Analyzer extends Component {
         width={width}
         timeDomain={timeDomain}
         fft={fft}
+        status={status}
       />
     );
   }

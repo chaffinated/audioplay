@@ -139,7 +139,7 @@ class AudioPlay extends Component {
 
     return (
       <div className="screen" ref={el => { this.screen = el; }}>
-        {/* {
+        {
           ready && source && buffer
           ? (
             <Analyzer
@@ -155,18 +155,11 @@ class AudioPlay extends Component {
             />
           )
           : null
-        } */}
-        
+        }
+
         {
           ready && buffer
-            ? (
-              <this.props.waveform
-                height={height}
-                width={width}
-                bins={bins}
-                buffer={buffer}
-              />
-            )
+            ? <this.props.waveform bins={bins} buffer={buffer} />
             : null
         }
 
