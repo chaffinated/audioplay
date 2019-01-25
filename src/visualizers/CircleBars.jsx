@@ -66,9 +66,9 @@ export default class Visualizer extends Component {
       // weight = aWeight(FREQS * f + 20);
       intensity = (fft[i] - analyzer.minDecibels) / dbRange;
       this.ctx.strokeStyle = `rgb(
-        ${Math.floor(intensity * 180)},
-        ${Math.floor(intensity * 210)},
-        ${Math.floor(intensity * 110 + 100)})
+        ${Math.floor(intensity * 220)},
+        ${Math.floor(intensity * 250)},
+        ${Math.floor(intensity * 90 + 165)})
       `;
       // this.ctx.strokeStyle = `rgba(25,5,30,${1 / (intensity + 1) - intensity * 0.8})`;
       this.ctx.beginPath();
