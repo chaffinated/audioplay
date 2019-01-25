@@ -34,7 +34,7 @@ export default class Waveform extends Component {
     const { width, height } = this;
     const { bins, buffer } = this.props;
     const frames = calculateRMSWaveform(buffer, bins);
-    const barHeightScalar = height / 2 * INNER_TO_OUTER_RATIO;
+    const barHeightScalar = height * 0.7 * INNER_TO_OUTER_RATIO;
     const bars = [];
     const length = frames.length;
     const r1 = Math.min(width, height) / 2;

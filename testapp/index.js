@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { render } from 'react-dom'
 import styled from 'styled-components'
 import AudioPlay from '../src/AudioPlay'
-import src from './audio/airy.mp3'
+import src from './audio/kites.mp3'
 import './index.scss';
 
 const Wrap = styled.div`

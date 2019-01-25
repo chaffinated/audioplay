@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// import aWeight from 'a-weighting/a';
 import { calculateRMSWaveform } from '../utils';
 import { TWOPI } from '../constants/math';
 import { INNER_TO_OUTER_RATIO } from '../constants/Circles';
 
 const VIS_WIDTH = 1600;
 const VIS_HEIGHT = 1600;
+// const FREQS = 22050;
 
 export default class Visualizer extends Component {
   constructor(props) {
@@ -34,7 +36,7 @@ export default class Visualizer extends Component {
       angle = i / fft.length * TWOPI;
       this.points.push([
         Math.cos(angle) * (radius * INNER_TO_OUTER_RATIO) + radius,
-        Math.sin(angle) * (radius * INNER_TO_OUTER_RATIO) + radius,
+        Math.sin(-angle) * (radius * INNER_TO_OUTER_RATIO) + radius,
       ]);
     }
   }
@@ -42,10 +44,12 @@ export default class Visualizer extends Component {
   draw = () => {
     if (this.canvas == null) return;
     const { width, height, points } = this;
-    const { fft, bins } = this.props;
-    const barHeightScalar = height / 8;
+    const { fft, bins, analyzer } = this.props;
+    const barHeightScalar = height / 7;
     const barWidth = width / bins / 2;
     const radius = height / 2;
+    const innerRadius = radius * INNER_TO_OUTER_RATIO;
+    const dbRange = analyzer.maxDecibels - analyzer.minDecibels;
 
     this.ctx.clearRect(0, 0, width, height);
     this.ctx.lineWidth = barWidth;
@@ -53,22 +57,26 @@ export default class Visualizer extends Component {
     let barR;
     let intensity;
     let angle;
+    // let weight;
+    let f;
 
     for (let i = 0; i < fft.length; i++) {
-      angle = i / fft.length * TWOPI;
-      intensity = (fft[i] + 180) / 180;
-      // this.ctx.strokeStyle = `rgb(
-      //   ${Math.floor(intensity * 255 + 10)},
-      //   ${Math.floor(intensity * 180 + 20)},
-      //   ${Math.floor((1 / intensity) * 100)})
-      // `;
-      this.ctx.strokeStyle = `rgba(25,5,30,${1 / (intensity + 1) - intensity / 3})`;
+      f = i / fft.length;
+      angle = f * TWOPI;
+      // weight = aWeight(FREQS * f + 20);
+      intensity = (fft[i] - analyzer.minDecibels) / dbRange;
+      this.ctx.strokeStyle = `rgb(
+        ${Math.floor(intensity * 180)},
+        ${Math.floor(intensity * 210)},
+        ${Math.floor(intensity * 110 + 100)})
+      `;
+      // this.ctx.strokeStyle = `rgba(25,5,30,${1 / (intensity + 1) - intensity * 0.8})`;
       this.ctx.beginPath();
-      barR = intensity * barHeightScalar + (radius * INNER_TO_OUTER_RATIO);
+      barR = intensity * barHeightScalar + innerRadius;
       this.ctx.moveTo(...points[i]);
       this.ctx.lineTo(
         Math.cos(angle) * barR + radius,
-        Math.sin(angle) * barR + radius,
+        Math.sin(-angle) * barR + radius,
       );
       this.ctx.stroke();
     }
@@ -81,7 +89,7 @@ export default class Visualizer extends Component {
 
   render() {
     const { waveform, width, height, points } = this;
-    const { fft, bins } = this.props;
+    const { fft } = this.props;
     if (waveform == null || fft == null || points == null) return null;
 
     return (

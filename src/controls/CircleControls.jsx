@@ -22,12 +22,13 @@ export default class Controls extends PureComponent {
 
   state = {
     shouldShowCursor: false,
-    cursorPosition: 0,
+    cursorPosition: { x1: 0, y1: 0, x2: 0, y2: 0 },
   }
 
   constructor(props) {
     super(props);
     this.controlsEl = React.createRef();
+    this.cursorEl = React.createRef();
   }
 
   handleMouseOver = (e) => {
@@ -35,7 +36,13 @@ export default class Controls extends PureComponent {
   }
 
   handleMouseMove = (e) => {
-    if (this.controlsEl.current == null) return;
+    const { controlsEl, cursorEl } = this;
+    const { target } = e;
+    if (controlsEl.current == null) return;
+    if (target !== controlsEl.current && target !== cursorEl.current) {
+      this.setState({ shouldShowCursor: false });
+      return;
+    }
     const { width, height } = this.props;
     const { x, y } = this.controlsEl.current.getBoundingClientRect();
     const { clientX, clientY } = e;
@@ -44,8 +51,8 @@ export default class Controls extends PureComponent {
       height - (clientY - y) - r,
       clientX - x - r,
     );
-    const cursorX = r * Math.cos(angle);
-    const cursorY = -r * Math.sin(angle);
+    const cursorX = r * Math.cos(angle) * INNER_TO_OUTER_RATIO;
+    const cursorY = -r * Math.sin(angle) * INNER_TO_OUTER_RATIO;
     this.setState({ cursorPosition: {
       angle: angle < 0 ? angle + TWOPI : angle,
       x1: r,
@@ -101,10 +108,17 @@ export default class Controls extends PureComponent {
               y2={cursorPosition.y2}
               strokeWidth='2'
               onClick={this.setTime}
+              ref={this.cursorEl}
             />
         }
         
-        <Play className='controls__play' status={status} x={radius - 50} y={radius - 50} onClick={this.togglePlay} />
+        <Play
+          className='controls__play'
+          status={status}
+          x={radius - 50}
+          y={radius - 50}
+          onClick={this.togglePlay}
+        />
       </svg>
     );
   }

@@ -24,7 +24,7 @@ export default ({className = 'icon-play', status, ...props}) => {
         </linearGradient>
       </defs>
 
-      <circle cx="50" cy="50" r="50" className={`${className}__button-fill`} />
+      <circle cx="50" cy="50" r="49" className={`${className}__button-fill`} />
       <circle cx="50" cy="50" r="50" mask={`url(#${playMask})`} fill={`url(#${className}__bg)`} />
     </svg>
   )

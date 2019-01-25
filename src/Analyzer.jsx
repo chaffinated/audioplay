@@ -36,6 +36,7 @@ export default class Analyzer extends Component {
     const { audioContext, source, bins } = this.props;
     this.analyzer = audioContext.createAnalyser();
     this.analyzer.fftSize = bins * 2;
+    this.analyzer.smoothingTimeConstant = 0.7;
     source.connect(this.analyzer);
     Ticker.push(this, false);
   }
@@ -57,6 +58,7 @@ export default class Analyzer extends Component {
   }
 
   render() {
+    const { analyzer } = this;
     const { bins, buffer, height, width, status } = this.props;
     const { timeDomain, fft } = this.state;
     return (
@@ -68,6 +70,7 @@ export default class Analyzer extends Component {
         timeDomain={timeDomain}
         fft={fft}
         status={status}
+        analyzer={analyzer}
       />
     );
   }
