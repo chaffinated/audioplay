@@ -27,7 +27,7 @@ export default class Visualizer extends Component {
 
   componentDidMount() {
     const { height } = this;
-    const { bins, buffer, fft } = this.props;
+    const { bins, buffer, fft, timeDomain } = this.props;
     const radius = height / 2;
     this.waveform = calculateRMSWaveform(buffer, bins);
     this.points = [];
@@ -44,8 +44,8 @@ export default class Visualizer extends Component {
   draw = () => {
     if (this.canvas == null) return;
     const { width, height, points } = this;
-    const { fft, bins, analyzer } = this.props;
-    const barHeightScalar = height / 7;
+    const { fft, bins, analyzer, timeDomain } = this.props;
+    const barHeightScalar = height / 6;
     const barWidth = width / bins / 2;
     const radius = height / 2;
     const innerRadius = radius * INNER_TO_OUTER_RATIO;

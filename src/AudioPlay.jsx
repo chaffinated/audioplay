@@ -12,6 +12,9 @@ Ticker.pauseInBackground = false;
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 
+const DEFAULT_WIDTH = 800;
+const DEFAULT_HEIGHT = 800;
+
 class AudioPlay extends Component {
   constructor(props) {
     super(props);
@@ -19,17 +22,16 @@ class AudioPlay extends Component {
       ready: false,
       status: PlayStatus.UNSTARTED,
       playingProgress: 0,
-      buffer: null
+      buffer: null,
     };
     this._audioContextSuspended = true;
+    this.screenEl = React.createRef();
   }
 
   static propTypes = {
     src: PropTypes.string.isRequired,
     bins: powerOf2.isRequired,
     visualizer: PropTypes.func,
-    height: PropTypes.number,
-    width: PropTypes.number,
     waveform: PropTypes.func,
     controls: PropTypes.func,
   };
@@ -37,8 +39,6 @@ class AudioPlay extends Component {
   static defaultProps = {
     bins: 256,
     visualizer: Visualizer,
-    height: 800,
-    width: 800,
     waveform: Waveform,
     controls: Controls,
   };
@@ -133,12 +133,13 @@ class AudioPlay extends Component {
   }
 
   render() {
-    const { audio, audioContext, source } = this;
-    const { bins, visualizer, height, width } = this.props;
+    const { audio, audioContext, source, screenEl } = this;
+    const { bins, visualizer } = this.props;
     const { ready, playingProgress, buffer, status } = this.state;
+    const { width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT } = screenEl.current && screenEl.current.getBoundingClientRect() || {};
 
     return (
-      <div className="screen" ref={el => { this.screen = el; }}>
+      <div className="screen" ref={screenEl}>
         {
           ready && source && buffer
           ? (
@@ -168,6 +169,8 @@ class AudioPlay extends Component {
           setCurrentTime={this.setCurrentTime}
           completion={playingProgress}
           status={status}
+          width={width}
+          height={height}
         />
       </div>
     );
