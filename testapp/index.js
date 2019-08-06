@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import AudioPlay from '../src/AudioPlay'
-import src from './audio/blurred-bonobo-remix.mp3'
+import src from './audio/time-traveler.mp3'
 import './index.scss';
 
 class App extends Component {

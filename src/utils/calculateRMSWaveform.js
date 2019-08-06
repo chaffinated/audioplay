@@ -1,4 +1,4 @@
-import range from 'lodash/range'
+import { range } from 'ramda'
 
 const calculateRMSWaveform = (buffer, bins) => {
   const channels = range(0, buffer.numberOfChannels - 1)

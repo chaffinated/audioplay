@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import aWeight from 'a-weighting/a';
 import { calculateRMSWaveform } from '../utils';
 import { TWOPI } from '../constants/math';
 import { INNER_TO_OUTER_RATIO } from '../constants/Circles';
